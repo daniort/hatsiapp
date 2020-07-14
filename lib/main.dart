@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hatsiapp/Router/generaRouter.dart';
+import 'package:hatsiapp/Router/strings.dart';
+import 'package:hatsiapp/Router/generaRouter.dart' as router;
 
 void main() {
   runApp(MyApp());
@@ -14,7 +15,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Color(0xFF0076a6),
       ),
-      home: MyHomePage(),
+      onGenerateRoute: router.generateRouter,
+      initialRoute: mainRoute,
     );
   }
 }
@@ -56,7 +58,7 @@ class MyHomePage extends StatelessWidget {
                 padding: const EdgeInsets.all(10.0),
                 child: InkWell(
                   onTap: () {
-                    Navigator.pushNamed(context, principal);
+                    Navigator.pushNamed((context), principalRoute);
                   },
                   child: Container(
                     height: alto * .07,

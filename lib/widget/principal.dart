@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hatsiapp/widget/datos_rest.dart';
+import 'package:hatsiapp/Router/strings.dart';
 
 class Principal extends StatefulWidget {
   @override
@@ -59,12 +59,7 @@ class _PrincipalState extends State<Principal> {
                 padding: const EdgeInsets.only(top: 10, right: 10),
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Editar(),
-                      ),
-                    );
+                    Navigator.pushNamed(context, editarRoute);
                   },
                   child: Container(
                     height: alto * .05,
@@ -94,6 +89,17 @@ class _PrincipalState extends State<Principal> {
               ),
             ),
             Container(),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: FloatingActionButton(
+                  child: Icon(
+                    Icons.add,
+                    size: 40,
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, newplatilloRoute);
+                  }),
+            ),
           ],
         ),
       ),
