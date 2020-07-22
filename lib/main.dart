@@ -1,88 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:hatsiapp/Router/strings.dart';
-import 'package:hatsiapp/Router/generaRouter.dart' as router;
+import 'package:hatsiapp/state/loginstate.dart';
+import 'package:hatsiapp/widget/login.dart';
+import 'package:hatsiapp/widget/principal.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'HatsiApp',
-      theme: ThemeData(
-        primaryColor: Color(0xFF0076a6),
-      ),
-      onGenerateRoute: router.generateRouter,
-      initialRoute: mainRoute,
-    );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final alto = MediaQuery.of(context).size.height;
-    final ancho = MediaQuery.of(context).size.width;
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 20, bottom: 10),
-                child: Text(
-                  'Hatsi!',
-                  style: TextStyle(fontSize: 30),
-                ),
-              ),
-              Text('For restaurante'),
-              Expanded(
-                  child: Container(
-                child: Image.asset('lib/asset/main.jpg'),
-              )),
-              Text(
-                'Bienvenido',
-                style: TextStyle(fontSize: 25),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Text(
-                  'Entra y sigue compartiendo con todos tus platillos más deliciosos.',
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.pushNamed((context), principalRoute);
-                  },
-                  child: Container(
-                    height: alto * .07,
-                    width: ancho,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                        color: Color(0xff4c5b5c)),
-                    child: Center(
-                      child: Text(
-                        'Ingresar',
-                        style: TextStyle(fontSize: 20, color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Text('¿Aún no eres parte de nosotros?'),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 15),
-                child: InkWell(onTap: () {}, child: Text('Registrate Aqui')),
-              )
-            ],
-          ),
+    return ChangeNotifierProvider<LoginState>(
+      create: (BuildContext context) => LoginState(),
+      child: MaterialApp(
+        title: 'HatsiApp',
+        theme: ThemeData(
+          primaryColor: Color(0xFF0076a6),
         ),
+        routes: {
+          "/": (BuildContext context) {
+            if (Provider.of<LoginState>(context, listen: true).islogin()) {
+              return Principal();
+            } else {
+              return LoginPage();
+            }
+          }
+        },
       ),
     );
   }
