@@ -59,6 +59,13 @@ class _RegistroState extends State<Registro> {
               ),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Estos datos son solo para el registro, al ingresar deberas de completar los datos de tu perfil",
+              textAlign: TextAlign.center,
+            ),
+          ),
           Expanded(
             flex: 3,
             child: Form(
@@ -81,6 +88,7 @@ class _RegistroState extends State<Registro> {
                           if (val.isEmpty) {
                             return "Hey, ¿Cuál es tu nombre?";
                           }
+                          return null;
                         },
                       ),
                     ),
@@ -102,6 +110,7 @@ class _RegistroState extends State<Registro> {
                           if (!regExp.hasMatch(val.toString())) {
                             return "Formato incorrecto";
                           }
+                          return null;
                         },
                       ),
                     ),
@@ -122,6 +131,7 @@ class _RegistroState extends State<Registro> {
                           if (val.length < 10) {
                             return "Esperamos 10 números, creo que te comiste alguno.";
                           }
+                          return null;
                         },
                       ),
                     ),
@@ -141,6 +151,7 @@ class _RegistroState extends State<Registro> {
                           if (val.isEmpty) {
                             return "Esto es muy importante";
                           }
+                          return null;
                         },
                       ),
                     ),

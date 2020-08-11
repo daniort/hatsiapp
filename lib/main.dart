@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hatsiapp/Router/strings.dart';
 import 'package:hatsiapp/state/loginstate.dart';
 import 'package:hatsiapp/widget/login.dart';
-import 'package:hatsiapp/widget/principal.dart';
+import 'package:hatsiapp/widget/menubar.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -22,7 +21,7 @@ class MyApp extends StatelessWidget {
         routes: {
           "/": (BuildContext context) {
             if (Provider.of<LoginState>(context, listen: true).islogin()) {
-              return Principal();
+              return NavigationBar();
             } else {
               return LoginPage();
             }

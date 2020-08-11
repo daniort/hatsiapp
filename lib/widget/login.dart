@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hatsiapp/Router/strings.dart';
 import 'package:hatsiapp/error/color.dart';
 import 'package:hatsiapp/state/loginstate.dart';
 import 'package:hatsiapp/widget/registro.dart';
@@ -15,7 +14,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _passController;
 
   final _formLogin = GlobalKey<FormState>();
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  //final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void initState() {
     _emailController = TextEditingController();

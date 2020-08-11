@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hatsiapp/service/service.dart';
+import 'package:hatsiapp/state/loginstate.dart';
+import 'package:provider/provider.dart';
 
 class NewPlatillo extends StatefulWidget {
   @override
@@ -30,14 +32,15 @@ class _NewPlatilloState extends State<NewPlatillo> {
   String ingrediente1;
   String ingrediente2;
   String ingrediente3;
-  String porcion;
-  String precio;
+  int porcion;
+  int precio;
   String nota;
   final _llave = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    final _user = Provider.of<LoginState>(context, listen: false).currentUser();
     final alto = MediaQuery.of(context).size.height;
-    final ancho = MediaQuery.of(context).size.width;
+    //final ancho = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Color(0xfff6f4f3),
       appBar: AppBar(
@@ -95,12 +98,17 @@ class _NewPlatilloState extends State<NewPlatillo> {
                                           BorderRadius.circular(20.0))),
                               keyboardType: TextInputType.text,
                               inputFormatters: [
-                                BlacklistingTextInputFormatter(RegExp("[0-9]")),
+                                BlacklistingTextInputFormatter(
+                                  RegExp("[0-9]"),
+                                ),
                               ],
                               autocorrect: false,
                               validator: (value) {
-                                if (value.isEmpty || value.length < 4) {
+                                if (value.isEmpty) {
                                   return "Escriba nombre del platillo";
+                                }
+                                if (value.length < 7) {
+                                  return "Nombre del platillo incompleto";
                                 }
                                 return null;
                               },
@@ -124,12 +132,17 @@ class _NewPlatilloState extends State<NewPlatillo> {
                                           BorderRadius.circular(20.0))),
                               keyboardType: TextInputType.text,
                               inputFormatters: [
-                                BlacklistingTextInputFormatter(RegExp("[0-9]")),
+                                BlacklistingTextInputFormatter(
+                                  RegExp("[0-9]"),
+                                ),
                               ],
                               autocorrect: false,
                               validator: (value) {
-                                if (value.isEmpty || value.length < 4) {
+                                if (value.isEmpty) {
                                   return "Escriba ingrediente del platillo";
+                                }
+                                if (value.length < 7) {
+                                  return "El ingrediente esta incompleto";
                                 }
                                 return null;
                               },
@@ -153,12 +166,17 @@ class _NewPlatilloState extends State<NewPlatillo> {
                                           BorderRadius.circular(20.0))),
                               keyboardType: TextInputType.text,
                               inputFormatters: [
-                                BlacklistingTextInputFormatter(RegExp("[0-9]")),
+                                BlacklistingTextInputFormatter(
+                                  RegExp("[0-9]"),
+                                ),
                               ],
                               autocorrect: false,
                               validator: (value) {
-                                if (value.isEmpty || value.length < 4) {
+                                if (value.isEmpty) {
                                   return "Escriba ingrediente del platillo";
+                                }
+                                if (value.length < 7) {
+                                  return "El ingrediente esta incompleto";
                                 }
                                 return null;
                               },
@@ -182,12 +200,14 @@ class _NewPlatilloState extends State<NewPlatillo> {
                                           BorderRadius.circular(20.0))),
                               keyboardType: TextInputType.text,
                               inputFormatters: [
-                                BlacklistingTextInputFormatter(RegExp("[0-9]")),
+                                BlacklistingTextInputFormatter(
+                                  RegExp("[0-9]"),
+                                ),
                               ],
                               autocorrect: false,
                               validator: (value) {
                                 if (value.isNotEmpty && value.length < 4) {
-                                  return "Escriba ingrediente del platillo";
+                                  return "Ingrediente incompleto";
                                 }
                                 return null;
                               },
@@ -205,15 +225,23 @@ class _NewPlatilloState extends State<NewPlatillo> {
                               controller: _porcionController,
                               cursorColor: Color(0xff11151C),
                               decoration: InputDecoration(
-                                  labelText: 'Porcion/Tamaño(gramos)',
-                                  border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(20.0))),
-                              keyboardType: TextInputType.text,
+                                labelText: 'Porcion/Tamaño(gramos)',
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20.0)),
+                              ),
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                BlacklistingTextInputFormatter(
+                                  RegExp("[A-Z],[a-z]"),
+                                ),
+                              ],
                               autocorrect: false,
                               validator: (value) {
-                                if (value.isEmpty || value.length < 4) {
+                                if (value.isEmpty) {
                                   return "Escriba la porcion del platillo";
+                                }
+                                if (value.length < 3 || value.length > 4) {
+                                  return "Formato invalido";
                                 }
                                 return null;
                               },
@@ -231,15 +259,23 @@ class _NewPlatilloState extends State<NewPlatillo> {
                               controller: _precioController,
                               cursorColor: Color(0xff11151C),
                               decoration: InputDecoration(
-                                  labelText: 'Precio',
+                                  labelText: 'Precio(en pesos)',
                                   border: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.circular(20.0))),
-                              keyboardType: TextInputType.text,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                BlacklistingTextInputFormatter(
+                                  RegExp("[A-Z],[a-z]"),
+                                ),
+                              ],
                               autocorrect: false,
                               validator: (value) {
-                                if (value.isEmpty || value.length < 4) {
+                                if (value.isEmpty) {
                                   return "Escriba el precio del platillo";
+                                }
+                                if (value.length < 2 || value.length > 4) {
+                                  return "Formato invalido del precio";
                                 }
                                 return null;
                               },
@@ -267,8 +303,11 @@ class _NewPlatilloState extends State<NewPlatillo> {
                               ],
                               autocorrect: false,
                               validator: (value) {
-                                if (value.isEmpty || value.length < 4) {
+                                if (value.isEmpty) {
                                   return "Escriba algo sobre el platillo";
+                                }
+                                if (value.length < 5) {
+                                  return "Nota incompleta";
                                 }
                                 return null;
                               },
@@ -312,12 +351,13 @@ class _NewPlatilloState extends State<NewPlatillo> {
                         onTap: () {
                           if (_llave.currentState.validate()) {
                             Userservice().platillo(
+                              _user,
                               nombrepla = _nameplatilloController.text,
                               ingrediente1 = _ingrediente1Controller.text,
                               ingrediente2 = _ingrediente2Controller.text,
                               ingrediente3 = _ingrediente3Controller.text,
-                              porcion = _porcionController.text,
-                              precio = _precioController.text,
+                              porcion = _porcionController.text as int,
+                              precio = _precioController.text as int,
                               nota = _notaController.text,
                             );
                             Navigator.pop(context);

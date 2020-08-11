@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hatsiapp/service/service.dart';
+import 'package:hatsiapp/state/loginstate.dart';
+import 'package:provider/provider.dart';
 
 class Editar extends StatefulWidget {
   @override
@@ -8,16 +11,38 @@ class Editar extends StatefulWidget {
 
 class _EditarState extends State<Editar> {
   TextEditingController _nameresController;
+  TextEditingController _direccionController;
+  TextEditingController _pisoController;
+  TextEditingController _telefonoController;
+  TextEditingController _correoController;
+  TextEditingController _sucursalController;
+  TextEditingController _tipoController;
   void initState() {
     _nameresController = TextEditingController();
+    _direccionController = TextEditingController();
+    _pisoController = TextEditingController();
+    _telefonoController = TextEditingController();
+    _correoController = TextEditingController();
+    _sucursalController = TextEditingController();
+    _tipoController = TextEditingController();
+
     super.initState();
   }
+
+  String nombre;
+  String direccion;
+  int piso;
+  int telefono;
+  String correo;
+  int sucursales;
+  String tipo;
 
   final _llave = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    final _user = Provider.of<LoginState>(context, listen: false).currentUser();
     final alto = MediaQuery.of(context).size.height;
-    final ancho = MediaQuery.of(context).size.width;
+    //final ancho = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Color(0xfff6f4f3),
       appBar: AppBar(
@@ -50,7 +75,7 @@ class _EditarState extends State<Editar> {
                               padding: const EdgeInsets.only(
                                   top: 20.0, left: 40.0, right: 40.0),
                               child: Text(
-                                'Necesitamos los datos de su restaurante para que que los clientes hagan sus pedidos',
+                                'Necesitamos los datos de su restaurante para que se muestren a los clientes',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 15,
@@ -73,6 +98,7 @@ class _EditarState extends State<Editar> {
                                 controller: _nameresController,
                                 cursorColor: Color(0xff11151C),
                                 decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.restaurant),
                                     labelText: 'Nombre del restaurante',
                                     border: OutlineInputBorder(
                                         borderRadius:
@@ -84,8 +110,11 @@ class _EditarState extends State<Editar> {
                                 ],
                                 autocorrect: false,
                                 validator: (value) {
-                                  if (value.isNotEmpty && value.length < 4) {
-                                    return "Nombre Incompleto";
+                                  if (value.isEmpty) {
+                                    return "Agrega el nombre";
+                                  }
+                                  if (value.length < 4) {
+                                    return "Nombre incompleto";
                                   }
                                   return null;
                                 },
@@ -103,22 +132,20 @@ class _EditarState extends State<Editar> {
                                   borderRadius: BorderRadius.circular(20),
                                   color: Colors.black12),
                               child: TextFormField(
-                                controller: _nameresController,
+                                controller: _direccionController,
                                 cursorColor: Color(0xff11151C),
                                 decoration: InputDecoration(
+                                    prefixIcon:
+                                        Icon(Icons.store_mall_directory),
                                     labelText: 'Direccion',
                                     border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(20.0))),
                                 keyboardType: TextInputType.text,
-                                inputFormatters: [
-                                  BlacklistingTextInputFormatter(
-                                      RegExp("[0-9]")),
-                                ],
                                 autocorrect: false,
                                 validator: (value) {
-                                  if (value.isNotEmpty && value.length < 4) {
-                                    return "Nombre Incompleto";
+                                  if (value.isEmpty || value.length < 4) {
+                                    return "Direccion Incompleta";
                                   }
                                   return null;
                                 },
@@ -136,22 +163,26 @@ class _EditarState extends State<Editar> {
                                   borderRadius: BorderRadius.circular(20),
                                   color: Colors.black12),
                               child: TextFormField(
-                                controller: _nameresController,
+                                controller: _pisoController,
                                 cursorColor: Color(0xff11151C),
                                 decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.home),
                                     labelText: 'Piso/oficina (Opcional)',
                                     border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(20.0))),
-                                keyboardType: TextInputType.text,
+                                keyboardType: TextInputType.number,
                                 inputFormatters: [
                                   BlacklistingTextInputFormatter(
-                                      RegExp("[0-9]")),
+                                      RegExp("[A-Z],[a-z]")),
                                 ],
                                 autocorrect: false,
                                 validator: (value) {
-                                  if (value.isNotEmpty && value.length < 4) {
-                                    return "Nombre Incompleto";
+                                  if (value.isEmpty) {
+                                    return "Campo incompleto";
+                                  }
+                                  if (value.length >= 3) {
+                                    return "Formato incompleto";
                                   }
                                   return null;
                                 },
@@ -169,22 +200,26 @@ class _EditarState extends State<Editar> {
                                   borderRadius: BorderRadius.circular(20),
                                   color: Colors.black12),
                               child: TextFormField(
-                                controller: _nameresController,
+                                controller: _telefonoController,
                                 cursorColor: Color(0xff11151C),
                                 decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.phone),
                                     labelText: 'Numero de telefono',
                                     border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(20.0))),
-                                keyboardType: TextInputType.text,
+                                keyboardType: TextInputType.number,
                                 inputFormatters: [
                                   BlacklistingTextInputFormatter(
-                                      RegExp("[0-9]")),
+                                      RegExp("[A-Z],[a-z]")),
                                 ],
                                 autocorrect: false,
                                 validator: (value) {
-                                  if (value.isNotEmpty && value.length < 4) {
-                                    return "Nombre Incompleto";
+                                  if (value.isEmpty) {
+                                    return "Agrega el Telefono";
+                                  }
+                                  if (value.length <= 9 && value.length >= 11) {
+                                    return "Deben de ser 10 digitos";
                                   }
                                   return null;
                                 },
@@ -202,22 +237,24 @@ class _EditarState extends State<Editar> {
                                   borderRadius: BorderRadius.circular(20),
                                   color: Colors.black12),
                               child: TextFormField(
-                                controller: _nameresController,
+                                controller: _correoController,
                                 cursorColor: Color(0xff11151C),
                                 decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.email),
                                     labelText: 'Correo electronico',
                                     border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(20.0))),
-                                keyboardType: TextInputType.text,
-                                inputFormatters: [
-                                  BlacklistingTextInputFormatter(
-                                      RegExp("[0-9]")),
-                                ],
+                                keyboardType: TextInputType.emailAddress,
                                 autocorrect: false,
                                 validator: (value) {
-                                  if (value.isNotEmpty && value.length < 4) {
-                                    return "Nombre Incompleto";
+                                  if (value.isEmpty) {
+                                    return "Correo Incompleto";
+                                  }
+                                  RegExp regExp =
+                                      new RegExp(r'^[^@]+@[^@]+\.[^@]+');
+                                  if (!regExp.hasMatch(value.toString())) {
+                                    return "Formato incorrecto";
                                   }
                                   return null;
                                 },
@@ -235,22 +272,26 @@ class _EditarState extends State<Editar> {
                                   borderRadius: BorderRadius.circular(20),
                                   color: Colors.black12),
                               child: TextFormField(
-                                controller: _nameresController,
+                                controller: _sucursalController,
                                 cursorColor: Color(0xff11151C),
                                 decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.home),
                                     labelText: 'Numero de ubicaciones',
                                     border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(20.0))),
-                                keyboardType: TextInputType.text,
+                                keyboardType: TextInputType.number,
                                 inputFormatters: [
                                   BlacklistingTextInputFormatter(
-                                      RegExp("[0-9]")),
+                                      RegExp("[A-Z, a-z]")),
                                 ],
                                 autocorrect: false,
                                 validator: (value) {
-                                  if (value.isNotEmpty && value.length < 4) {
-                                    return "Nombre Incompleto";
+                                  if (value.isEmpty) {
+                                    return "Agrega el numero de ubicaciones";
+                                  }
+                                  if (value.length < 1 || value.length > 3) {
+                                    return "Formato invalido";
                                   }
                                   return null;
                                 },
@@ -268,9 +309,10 @@ class _EditarState extends State<Editar> {
                                   borderRadius: BorderRadius.circular(20),
                                   color: Colors.black12),
                               child: TextFormField(
-                                controller: _nameresController,
+                                controller: _tipoController,
                                 cursorColor: Color(0xff11151C),
                                 decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.restaurant_menu),
                                     labelText: 'Tipo de Cocina',
                                     border: OutlineInputBorder(
                                         borderRadius:
@@ -282,8 +324,11 @@ class _EditarState extends State<Editar> {
                                 ],
                                 autocorrect: false,
                                 validator: (value) {
-                                  if (value.isNotEmpty && value.length < 4) {
-                                    return "Nombre Incompleto";
+                                  if (value.isEmpty) {
+                                    return "Agrega el tipo de cocina";
+                                  }
+                                  if (value.length < 4) {
+                                    return "Dato incompleto";
                                   }
                                   return null;
                                 },
@@ -325,7 +370,26 @@ class _EditarState extends State<Editar> {
                       Expanded(
                         child: InkWell(
                           onTap: () {
-                            Navigator.pop(context);
+                            if (_llave.currentState.validate()) {
+                              Userservice().datosRestaurant(
+                                _user,
+                                nombre = _nameresController.text,
+                                direccion = _direccionController.text,
+                                piso = _pisoController.text as int,
+                                telefono = _telefonoController.text as int,
+                                correo = _correoController.text,
+                                sucursales = _sucursalController.text as int,
+                                tipo = _tipoController.text,
+                              );
+                              Navigator.pop(context);
+                              _nameresController.clear();
+                              _direccionController.clear();
+                              _pisoController.clear();
+                              _telefonoController.clear();
+                              _correoController.clear();
+                              _sucursalController.clear();
+                              _tipoController.clear();
+                            }
                           },
                           child: Center(
                             child: Text(

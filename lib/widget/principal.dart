@@ -1,10 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:hatsiapp/Router/strings.dart';
-import 'package:hatsiapp/state/loginstate.dart';
-import 'package:hatsiapp/widget/datos_rest.dart';
 import 'package:hatsiapp/widget/new_platillo.dart';
-import 'package:provider/provider.dart';
 
 class Principal extends StatefulWidget {
   @override
@@ -30,77 +26,6 @@ class _PrincipalState extends State<Principal> {
                       child: Image.asset('lib/asset/images/menu.jpg'),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, left: 10),
-                    child: InkWell(
-                      onTap: () {
-                        context.read<LoginState>().logout();
-                      },
-                      child: Container(
-                        height: alto * .05,
-                        width: ancho * .2,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: Row(
-                          children: <Widget>[
-                            Icon(
-                              Icons.arrow_back_ios,
-                              size: 25,
-                            ),
-                            SizedBox(width: 5),
-                            Text(
-                              'Salir',
-                              style: TextStyle(
-                                fontSize: 20,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 10, right: 10),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Editar(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          height: alto * .05,
-                          width: ancho * .25,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                          child: Row(
-                            children: <Widget>[
-                              SizedBox(width: 5),
-                              Icon(
-                                Icons.edit,
-                                size: 25,
-                              ),
-                              SizedBox(width: 5),
-                              Text(
-                                'Editar',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -110,6 +35,8 @@ class _PrincipalState extends State<Principal> {
                   Container(
                     child: StreamBuilder(
                       stream: Firestore.instance
+                          .collection('restaurantes')
+                          .document()
                           .collection('platillos')
                           .snapshots(),
                       builder:
@@ -123,7 +50,7 @@ class _PrincipalState extends State<Principal> {
                         List<DocumentSnapshot> docs = snapshot.data.documents;
 
                         docs.sort((a, b) {
-                          return a['Nombre'].compareTo(b['Nombre']);
+                          return a['nombre'].compareTo(b['nombre']);
                         });
                         return ListView.builder(
                           itemCount: (docs.length),
@@ -132,30 +59,30 @@ class _PrincipalState extends State<Principal> {
                             return ExpansionTile(
                               backgroundColor: Color(0x1D605e5f),
                               title: Text(
-                                data['Nombre'],
+                                data['nombre'],
                                 style: TextStyle(
                                     color: Color(0xFF262626),
                                     fontWeight: FontWeight.bold),
                               ),
-                              subtitle: Text(data['Nota']),
+                              subtitle: Text(data['nota']),
                               children: <Widget>[
                                 ListTile(
-                                  title: Text(' Ingredientes: '),
+                                  title: Text(' ingredientes: '),
                                 ),
                                 ListTile(
-                                  title: Text(data['Ingredienteuno']),
+                                  title: Text(data['ingredienteuno']),
                                 ),
                                 ListTile(
-                                  title: Text(data['Ingredientedos']),
+                                  title: Text(data['ingredientedos']),
                                 ),
                                 ListTile(
-                                  title: Text(data['Ingredientetres']),
+                                  title: Text(data['ingredientetres']),
                                 ),
                                 ListTile(
-                                  title: Text(' Porcion: ' + data['Tamaño']),
+                                  title: Text(' porcion: ' + data['tamaño']),
                                 ),
                                 ListTile(
-                                  title: Text(' Precio: ' + data['Precio']),
+                                  title: Text(' precio: ' + data['precio']),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(
